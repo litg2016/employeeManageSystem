@@ -17,7 +17,9 @@ int main() {
 			wm.exit_system();
 			break;
 		case 1: //增加职工信息
-
+			wm.add_worker();
+			system("pause");
+			system("cls");
 			break;
 		case 2:
 			break;
