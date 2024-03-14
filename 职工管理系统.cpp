@@ -21,9 +21,15 @@ int main() {
 			system("pause");
 			system("cls");
 			break;
-		case 2:
+		case 2: //显示职工信息
+			wm.show_workerInfo();
+			system("pause");
+			system("cls");
 			break;
-		case 3:
+		case 3: //删除指定职工
+			wm.del_worker();
+			system("pause");
+			system("cls");
 			break;
 		case 4:
 			break;
@@ -34,7 +40,6 @@ int main() {
 		case 7:
 			break;
 		default:
-			system("cls");
 			break;
 		}
 	}

@@ -3,8 +3,53 @@
 #include<fstream>
 #define FILENAME "file.txt"
 WorkerManager::WorkerManager() {
-	this->num = 0;
-	this->p_Woker = NULL;
+	ifstream ifs;
+	ifs.open(FILENAME, ios::in);
+	if (!ifs.is_open()) {
+		this->num = 0;
+		this->p_Woker = NULL;
+		this->isFileEmpty = true;
+	}
+	else {
+		int id, deptId;
+		string name;
+		int num = 0;
+		while (ifs >> id && ifs >> name && ifs >> deptId) {
+			num++;
+		}
+		this->num = num;
+		if (num == 0) { this->p_Woker = NULL; return; }
+		this->isFileEmpty = false;
+		this->p_Woker = new Worker * [num];
+		int index = 0;
+		ifs.clear();
+		ifs.seekg(0, ios::beg);
+		//ifs >> id;
+		while (ifs >> id && ifs >> name && ifs >> deptId)
+		{
+			Worker* worker = NULL;
+			switch ( deptId)
+			{
+			case 1:
+				worker = new Employee(id, name, deptId);
+				break;
+			case 2:
+				worker = new Manager(id, name, deptId);
+				break;
+			case 3:
+				worker = new Boss(id, name, deptId);
+				break;
+			default:
+				break;
+			}
+			this->p_Woker[index++] = worker;
+		}
+
+
+
+
+	}
+	
 }
 
 
@@ -88,4 +133,44 @@ void WorkerManager::save() {
 		ofs << this->p_Woker[i]->id << "\t" << this->p_Woker[i]->name << "\t" << this->p_Woker[i]->deptId << endl;
 	}
 	ofs.close();
+}
+
+void WorkerManager::show_workerInfo() {
+	if (this->isFileEmpty) {
+		cout << "文件为空" << endl;
+	}
+	int num = this->num;
+	for (int i = 0; i < num; i++) {
+		Worker* w = this->p_Woker[i];
+		w->showInfo();
+	}
+	cout << "显示完毕" << endl;
+}
+
+int WorkerManager::is_exist(int id) {
+	int index = -1;
+	for (int i = 0; i < this->num; i++) {
+		Worker* w = this->p_Woker[i];
+		if (w->id == id) {
+			index = i;
+			break;
+		}
+	}
+	return index;
+}
+void WorkerManager::del_worker() {
+	if (this->isFileEmpty) {
+		cout << "文件不存在" << endl;
+		return;
+	}
+	cout << "请输入要删除职工编号：" << endl;
+	int id;
+	cin >> id;
+	int index = is_exist(id);
+	if (index == -1) { cout << "职工不存在，无法删除" << endl; return; }
+	for (int i = index; i < num - 1; i++) {
+		this->p_Woker[i] = this->p_Woker[i + 1];
+	}
+	this->num--;
+	cout << "删除成功！" << endl;
 }

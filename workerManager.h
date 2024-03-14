@@ -10,6 +10,7 @@ class WorkerManager {
 private:
 	int num;
 	Worker** p_Woker;
+	bool isFileEmpty;
 public:
 	void show_menu();  //展示菜单函数
 	WorkerManager();
@@ -17,5 +18,8 @@ public:
 	void exit_system();
 	void add_worker();
 	void save();
+	void show_workerInfo();
+	void del_worker();
+	int is_exist(int);
 	
 };
