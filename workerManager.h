@@ -22,5 +22,8 @@ public:
 	void del_worker();
 	int is_exist(int);
 	void mod_worker();
+	void find_worker();
+	void sort_worker();
+	void clean_file();
 	
 };

@@ -31,16 +31,25 @@ int main() {
 			system("pause");
 			system("cls");
 			break;
-		case 4:
+		case 4://修改职工
 			wm.mod_worker();
 			system("pause");
 			system("cls");
 			break;
-		case 5:
+		case 5://查找职工
+			wm.find_worker();
+			system("pause");
+			system("cls");
 			break;
-		case 6:
+		case 6://按照编号排序
+			wm.sort_worker();
+			system("pause");
+			system("cls");
 			break;
-		case 7:
+		case 7://清空文档
+			wm.clean_file();
+			system("pause");
+			system("cls");
 			break;
 		default:
 			break;

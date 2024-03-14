@@ -54,7 +54,16 @@ WorkerManager::WorkerManager() {
 
 
 WorkerManager::~WorkerManager() {
-
+	if (this->p_Woker != NULL) {
+		for (int i = 0; i < num; i++) {
+			if (this->p_Woker[i]) {
+				delete this->p_Woker[i];
+			}
+		}
+		delete[] this->p_Woker;
+		this->num = 0;
+		this->p_Woker = NULL;
+	}
 }
 void WorkerManager::exit_system() {
 	cout << "欢迎下次使用，即将退出" << endl;
@@ -190,7 +199,7 @@ void WorkerManager::mod_worker() {
 		return;
 	}
 	delete this->p_Woker[index];
-	Worker* w=NULL;
+	Worker* w = NULL;
 	cout << "查找到该职工，请输入职工新编号：" << endl;
 	int newId, newDeptId;
 	string newName;
@@ -216,4 +225,90 @@ void WorkerManager::mod_worker() {
 	this->p_Woker[index] = w;
 	cout << "修改成功" << endl;
 	save();
+}
+
+void WorkerManager::find_worker() {
+	if (this->isFileEmpty) {
+		cout << "文件为空" << endl;
+	}
+	cout << "请输入查找方式：\n1.按照编号查找 \n 2.按照姓名查找" << endl;
+	int select = 0;
+	cin >> select;
+	if (select == 1) {
+		cout << "请输入查找职工编号：" << endl;
+		int id;
+		cin >> id;
+		int index = this->is_exist(id);
+		if (index == -1) { cout << "查无此人" << endl; }
+		else {
+			cout << "查找成功，信息如下:" << endl;
+			this->p_Woker[index]->showInfo();
+		}
+	}
+	else if (select == 2) {
+		string name;
+		cout << "请输入姓名" << endl;
+		cin >> name;
+		bool flag = false;
+		for (int i = 0; i < this->num; i++) {
+			if (this->p_Woker[i]->name == name) {
+				cout << "查找成功，信息如下：" << endl;
+				flag = true;
+				this->p_Woker[i]->showInfo();
+			}
+		}
+		if (flag == false) { cout << "查无此人" << endl; }
+	}
+	else {
+		cout << "查找方式输入有误" << endl;
+	}
+}
+
+void WorkerManager::sort_worker() {
+	if (this->isFileEmpty) {
+		cout << "文件为空,无法排序" << endl;
+		return;
+	}
+	cout << "请选择排序方式：\n1.按职工编号升序\n2.按职工编号降序" << endl;
+	int select;
+	cin >> select;
+	for (int i = 0; i < this->num; i++) {
+		int index = i;
+		for (int j = i + 1; j < num; j++) {
+			if (select == 1) {
+				if (this->p_Woker[index]->id > this->p_Woker[j]->id)
+					index = j;
+			}
+			else {
+				if (this->p_Woker[index]->id < this->p_Woker[j]->id)
+					index = j;
+			}
+		}
+		if (i != index) {
+			Worker* temp = this->p_Woker[i];
+			this->p_Woker[i] = this->p_Woker[index];
+			this->p_Woker[index] = temp;
+		}
+	}
+	cout << "排序成功" << endl;
+	this->save();
+	this->show_workerInfo();
+}
+void WorkerManager::clean_file() {
+	cout << "确定清空？1.确定 2.返回" << endl;
+	int select = 0;
+	cin >> select;
+	if (select != 1) return;
+	ofstream ofs(FILENAME, ios::trunc);
+	ofs.close();
+	if (this->p_Woker != NULL) {
+		for (int i = 0; i < num; i++) {
+			if (this->p_Woker[i]) {
+				delete this->p_Woker[i];
+			}
+		}
+		delete[] this->p_Woker;
+		this->num = 0;
+		this->p_Woker = NULL;
+	}
 }
