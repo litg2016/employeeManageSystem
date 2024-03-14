@@ -21,5 +21,6 @@ public:
 	void show_workerInfo();
 	void del_worker();
 	int is_exist(int);
+	void mod_worker();
 	
 };

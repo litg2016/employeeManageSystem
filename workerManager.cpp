@@ -173,4 +173,47 @@ void WorkerManager::del_worker() {
 	}
 	this->num--;
 	cout << "删除成功！" << endl;
+	save();
+}
+
+void WorkerManager::mod_worker() {
+	if (this->isFileEmpty) {
+		cout << "文件为空！" << endl;
+		return;
+	}
+	cout << "请输入修改职工编号：" << endl;
+	int id;
+	cin >> id;
+	int index = this->is_exist(id);
+	if (index == -1) {
+		cout << "要修改职工编号不存在" << endl;
+		return;
+	}
+	delete this->p_Woker[index];
+	Worker* w=NULL;
+	cout << "查找到该职工，请输入职工新编号：" << endl;
+	int newId, newDeptId;
+	string newName;
+	cin >> newId;
+	cout << "请输入职工新名字：" << endl;
+	cin >> newName;
+	cout << "请输入岗位：\n1.普通职工\n2.经理\n3.总裁\n" << endl;
+	cin >> newDeptId;
+	switch (newDeptId) {
+	case 1:
+		w = new Employee(newId, newName, newDeptId);
+		break;
+	case 2:
+		w = new Manager(newId, newName, newDeptId);
+		break;
+	case 3:
+		w = new Boss(newId, newName, newDeptId);
+		break;
+	default:
+		break;
+
+	}
+	this->p_Woker[index] = w;
+	cout << "修改成功" << endl;
+	save();
 }

@@ -32,6 +32,9 @@ int main() {
 			system("cls");
 			break;
 		case 4:
+			wm.mod_worker();
+			system("pause");
+			system("cls");
 			break;
 		case 5:
 			break;
